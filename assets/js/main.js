@@ -1,5 +1,6 @@
 gsap.registerPlugin(ScrollTrigger);
 
+// 1. Efecto Parallax en el Hero
 const tl = gsap.timeline({
     scrollTrigger: {
         trigger: ".hero-parallax",
@@ -28,6 +29,7 @@ tl.to(".bg", {
     ease: "none"
 }, 0);
 
+// 2. Animación de carta de invitación
 gsap.to(".invitation-card", {
     scrollTrigger: {
         trigger: ".content-reveal",
@@ -38,3 +40,36 @@ gsap.to(".invitation-card", {
     duration: 1.8,
     ease: "power3.out"
 });
+
+// 3. Galería de Scroll Horizontal
+const galleryContainer = document.querySelector(".horizontal-gallery");
+
+if (galleryContainer) {
+    let scrollTween = gsap.to(galleryContainer, {
+        x: () => -(galleryContainer.scrollWidth - window.innerWidth),
+        ease: "none",
+        scrollTrigger: {
+            trigger: ".horizontal-gallery-wrapper",
+            pin: true,
+            scrub: 1,
+            end: () => "+=" + galleryContainer.scrollWidth
+        }
+    });
+
+    // Parallax interno para dar efecto de profundidad "hermoso" a las fotos
+    gsap.utils.toArray('.gallery-item img').forEach((img) => {
+        gsap.fromTo(img, 
+            { x: "-15%" },
+            {
+                x: "15%",
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".horizontal-gallery-wrapper",
+                    start: "top top",
+                    end: () => "+=" + galleryContainer.scrollWidth,
+                    scrub: 1
+                }
+            }
+        );
+    });
+}
