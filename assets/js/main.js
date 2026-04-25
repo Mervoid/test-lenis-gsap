@@ -29,7 +29,7 @@ tl.to(".bg", {
     ease: "none"
 }, 0);
 
-// 2. Animación de carta de invitación
+// 2. Animación de carta de invitación (Estrictamente GSAP)
 gsap.to(".invitation-card", {
     scrollTrigger: {
         trigger: ".content-reveal",
@@ -42,9 +42,26 @@ gsap.to(".invitation-card", {
 });
 
 // 3. Galería de Scroll Horizontal
+// Entrada del título animada con GSAP
+gsap.fromTo(".horizontal-gallery-title h2, .horizontal-gallery-title p",
+    { y: 30, opacity: 0 },
+    {
+        scrollTrigger: {
+            trigger: ".horizontal-gallery-wrapper",
+            start: "top 85%",
+        },
+        y: 0,
+        opacity: 1,
+        duration: 1.5,
+        stagger: 0.2,
+        ease: "power3.out"
+    }
+);
+
 const galleryContainer = document.querySelector(".horizontal-gallery");
 
 if (galleryContainer) {
+    // Scroll horizontal vinculado estricto a ScrollTrigger
     let scrollTween = gsap.to(galleryContainer, {
         x: () => -(galleryContainer.scrollWidth - window.innerWidth),
         ease: "none",
@@ -56,7 +73,7 @@ if (galleryContainer) {
         }
     });
 
-    // Parallax interno para dar efecto de profundidad "hermoso" a las fotos
+    // Parallax interno de las imágenes vinculado a la galería (puramente GSAP)
     gsap.utils.toArray('.gallery-item img').forEach((img) => {
         gsap.fromTo(img, 
             { x: "-15%" },
